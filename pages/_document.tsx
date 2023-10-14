@@ -43,6 +43,10 @@ export default class Document extends NextDocument {
       <Html>
         <Head>
           <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+          <link rel={'icon'} href={'/favicon.ico'} />
+          <link rel={'apple-touch-icon'} href={'/icon.png'} />
+          {/* TODO: put manifest.json into public/ by yourself */}
+          <link rel={'manifest'} href={'/manifest.json'} />
         </Head>
         <body>
           <Main />

@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const { withTamagui } = require('@tamagui/next-plugin')
+const withPWA = require('next-pwa')
 const { join } = require('path')
 
 const boolVals = {
@@ -51,6 +52,11 @@ const plugins = [
             }
         },
         excludeReactNativeWebExports: ['Switch', 'ProgressBar', 'Picker', 'CheckBox', 'Touchable'],
+    }),
+    withPWA({
+        dest: 'public',
+        register: true,
+        skipWaiting: true,
     }),
 ]
 
