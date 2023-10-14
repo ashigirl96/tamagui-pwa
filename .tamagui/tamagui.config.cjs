@@ -26528,72 +26528,6 @@ var import_react_native19 = require("react-native-web-lite");
 // node_modules/expo-modules-core/build/EventEmitter.js
 var import_invariant = __toESM(require_invariant());
 var import_react_native16 = require("react-native-web-lite");
-var nativeEmitterSubscriptionKey = "@@nativeEmitterSubscription@@";
-var _EventEmitter = class _EventEmitter {
-  _listenerCount = 0;
-  _nativeModule;
-  _eventEmitter;
-  constructor(nativeModule) {
-    if (nativeModule.__expo_module_name__ && import_react_native16.NativeModules.EXReactNativeEventEmitter) {
-      nativeModule.addListener = (...args) => import_react_native16.NativeModules.EXReactNativeEventEmitter.addProxiedListener(nativeModule.__expo_module_name__, ...args);
-      nativeModule.removeListeners = (...args) => import_react_native16.NativeModules.EXReactNativeEventEmitter.removeProxiedListeners(nativeModule.__expo_module_name__, ...args);
-    }
-    this._nativeModule = nativeModule;
-    this._eventEmitter = new import_react_native16.NativeEventEmitter(nativeModule);
-  }
-  addListener(eventName, listener) {
-    if (!this._listenerCount && import_react_native16.Platform.OS !== "ios" && this._nativeModule.startObserving) {
-      this._nativeModule.startObserving();
-    }
-    this._listenerCount++;
-    const nativeEmitterSubscription = this._eventEmitter.addListener(eventName, listener);
-    const subscription = {
-      [nativeEmitterSubscriptionKey]: nativeEmitterSubscription,
-      remove: () => {
-        this.removeSubscription(subscription);
-      }
-    };
-    return subscription;
-  }
-  removeAllListeners(eventName) {
-    const removedListenerCount = this._eventEmitter.listenerCount ? (
-      // @ts-ignore: this is available since 0.64
-      this._eventEmitter.listenerCount(eventName)
-    ) : (
-      // @ts-ignore: this is available in older versions
-      this._eventEmitter.listeners(eventName).length
-    );
-    this._eventEmitter.removeAllListeners(eventName);
-    this._listenerCount -= removedListenerCount;
-    (0, import_invariant.default)(this._listenerCount >= 0, `EventEmitter must have a non-negative number of listeners`);
-    if (!this._listenerCount && import_react_native16.Platform.OS !== "ios" && this._nativeModule.stopObserving) {
-      this._nativeModule.stopObserving();
-    }
-  }
-  removeSubscription(subscription) {
-    const nativeEmitterSubscription = subscription[nativeEmitterSubscriptionKey];
-    if (!nativeEmitterSubscription) {
-      return;
-    }
-    if ("remove" in nativeEmitterSubscription) {
-      nativeEmitterSubscription.remove();
-    } else if ("removeSubscription" in this._eventEmitter) {
-      this._eventEmitter.removeSubscription(nativeEmitterSubscription);
-    }
-    this._listenerCount--;
-    delete subscription[nativeEmitterSubscriptionKey];
-    subscription.remove = () => {
-    };
-    if (!this._listenerCount && import_react_native16.Platform.OS !== "ios" && this._nativeModule.stopObserving) {
-      this._nativeModule.stopObserving();
-    }
-  }
-  emit(eventName, ...params) {
-    this._eventEmitter.emit(eventName, ...params);
-  }
-};
-__name(_EventEmitter, "EventEmitter");
-var EventEmitter = _EventEmitter;
 
 // node_modules/expo-modules-core/build/NativeModulesProxy.js
 var NativeModulesProxy_default = {};
@@ -26668,7 +26602,7 @@ var import_react_native18 = require("react-native-web-lite");
 var NativeErrorManager_default = NativeModulesProxy_default.ExpoModulesCoreErrorManager;
 
 // node_modules/expo-modules-core/build/sweet/setUpErrorManager.fx.js
-if (Platform_default.OS === "android" && NativeErrorManager_default) {
+if (false) {
   const onNewException = "ExpoModulesCoreErrorManager.onNewException";
   const eventEmitter = new EventEmitter(NativeErrorManager_default);
   eventEmitter.addListener(onNewException, ({ message }) => {
@@ -26823,7 +26757,7 @@ var ExponentConstants_web_default = {
     }
   },
   get debugMode() {
-    return true;
+    return false;
   },
   async getWebViewUserAgentAsync() {
     if (Platform_default.isDOMAvailable) {
@@ -26866,7 +26800,6 @@ if (!rawManifest && ExponentConstants_web_default && ExponentConstants_web_defau
   }
 }
 var { name, appOwnership, ...nativeConstants } = ExponentConstants_web_default || {};
-var warnedAboutManifestField = false;
 var constants = {
   ...nativeConstants,
   // Ensure this is null in bare workflow
@@ -26907,7 +26840,7 @@ Object.defineProperties(constants, {
   },
   manifest: {
     get() {
-      if (!warnedAboutManifestField) {
+      if (false) {
         console.warn(`Constants.manifest has been deprecated in favor of Constants.expoConfig.`);
         warnedAboutManifestField = true;
       }
